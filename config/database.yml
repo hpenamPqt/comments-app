@@ -24,9 +24,10 @@ default: &default
 development:
   <<: *default
   host: localhost
+  port: 5433
   database: comments_app_development  
   username: lety
-  password: Erumur18  
+  password: Erumur17
 
   # Schema search path. The server defaults to $user,public
   #schema_search_path: myapp,sharedapp,public

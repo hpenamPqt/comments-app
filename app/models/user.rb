@@ -6,4 +6,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   include GraphqlDevise::Concerns::Model
+   # including after calling the `devise` method is important.
+#    include GraphqlDevise::Authenticatable
 end

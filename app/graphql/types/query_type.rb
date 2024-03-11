@@ -2,6 +2,9 @@
 
 module Types
   class QueryType < Types::BaseObject
+    
+    # field_class GraphqlDevise::Types::BaseField
+
     field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
       argument :id, ID, required: true, description: "ID of the object."
     end
@@ -22,7 +25,7 @@ module Types
     # They will be entry points for queries on your schema.
 
     # TODO: remove me
-    field :test_field, String, null: false,
+    field :test_field, String, null: false, authenticate: true,
       description: "An example field added by the generator"
     def test_field
       "Hello World!"

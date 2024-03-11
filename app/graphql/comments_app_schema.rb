@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 class CommentsAppSchema < GraphQL::Schema
+
+  # use GraphqlDevise::SchemaPlugin.new(
+  #   query:            Types::QueryType,
+  #   mutation:         Types::MutationType,
+  #   resource_loaders: [
+  #     GraphqlDevise::ResourceLoader.new('User', only: [:login, :logout])
+  #   ]
+  # )
+
   mutation(Types::MutationType)
   query(Types::QueryType)
 
