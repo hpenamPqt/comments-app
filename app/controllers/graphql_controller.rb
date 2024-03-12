@@ -5,25 +5,33 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session  
+  # before_action :authenticate_user!
+  include GraphqlDevise::SetUserByToken
+  
+  before_action -> { set_resource_by_token(User) }
 
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      current_user: current_user,
-    }
-    p '=====================================================>'
-    p context
+    
     result = CommentsAppSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render json: result
+    render json: result unless performed?
+    
   rescue StandardError => e
     raise e unless Rails.env.development?
     handle_error_in_development(e)
   end
 
   private
+  def context
+    devise_context = gql_devise_context(User)
+    # return devise_context unless devise_context[:current_resource]
+    # devise_context.merge(
+      # p devise_context[:current_resource]
+      # access_context: AccessContext::CurrentUser.for(devise_context[:current_resource])
+    # )
+  end
 
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)

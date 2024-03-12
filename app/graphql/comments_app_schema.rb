@@ -6,9 +6,26 @@ class CommentsAppSchema < GraphQL::Schema
   #   query:            Types::QueryType,
   #   mutation:         Types::MutationType,
   #   resource_loaders: [
-  #     GraphqlDevise::ResourceLoader.new('User', only: [:login, :logout])
+  #     GraphqlDevise::ResourceLoader.new(User, {
+  #       at: '/graphql_auth',
+  #       only: [:register, :login, :logout]})
   #   ]
-  # )
+  # ) 
+  default_page_size 50
+  use GraphqlDevise::SchemaPlugin.new(
+    query: Types::QueryType,
+    mutation: Types::MutationType,
+    public_introspection: true,
+    resource_loaders: [
+      GraphqlDevise::ResourceLoader.new(
+        User,
+        # operations: { register: Mutations::Users::SignUp },
+        # authenticatable_type: Types::User,
+      ),
+    ]
+  )
+  use(GraphQL::Dataloader)
+  # use(GraphQL::Tracing::AppsignalTracing)
 
   mutation(Types::MutationType)
   query(Types::QueryType)
